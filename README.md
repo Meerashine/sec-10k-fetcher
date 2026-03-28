@@ -9,13 +9,18 @@ companies and converts them to PDF.
 
 | Category | Time (hrs) |
 |----------|---------|
-| [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md) | 1.5 |
-| Coding and debugging | 2.5 |
+| [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md) | 2 |
+| Coding and debugging | 2 |
 
 ## Approach
 
 > **Start here → [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md)**
-> Covers: problem understanding, SEC API research, architecture decisions, simplification trade-offs, and what I'd build next.
+> Covers: problem understanding, SEC API research, architecture decisions, simplification, and what I'd build next.
+
+### Mindmap
+
+> ![Design Mindmap](assets/mindmap.png)
+> [View the design mindmap on Figma](https://www.figma.com/file/YOUR_FILE_ID)
 
 Quartr makes financial data accessible. The 10-K is the most comprehensive public
 disclosure a company produces such as revenue breakdowns, risk factors..etc. This
