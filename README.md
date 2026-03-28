@@ -5,26 +5,20 @@ companies and converts them to PDF.
 
 **Companies:** Apple, Meta, Alphabet, Amazon, Netflix, Goldman Sachs
 
-### Why This Exists 
+## Time Spend:
+
+| Category | Time (hrs) |
+|----------|---------|
+| [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md) | 1.5 |
+| Coding and debugging | 2.5 |
+
+## Why This Exists 
 
 **Detailed Solution design on [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md)**
 
 Quartr makes financial data accessible. The 10-K is the most comprehensive public
 disclosure a company produces such as revenue breakdowns, risk factors..etc. This
 service turns raw SEC filings into a reliable pipeline that feeds downstream products.
-
-## How It Works
-
-1. GETs each company's CIK number from SEC ticker via the SEC company tickers endpoint.
-2. create a ticker map from the optained ticker list.
-2. GET request to the EDGAR submissions API to find the most recent 10-K filing based on the mapping.
-3. Downloads the filing HTML from the SEC Archives.
-4. Renders the HTML to PDF using Playwright.
-5. Records the accession number in a manifest to avoid duplication and stores the HTML as well.
-6. Set a scheduler to run it everyday.
-7. Set up a notifier for letting the teams know when ever there is a new filling.
-
-Output PDFs are saved to the `sec_10k_pdfs/` directory.
 
 ## Project Structure
 
@@ -92,6 +86,19 @@ Edit `sec_fetcher/config.py`:
 | `COMPANIES` | This is the company names that we need information from SEC; Can add or remove based on what we need |
 | `REQUEST_DELAY_SECONDS` |As SEC has rate liniting; Delay between SEC requests (default 1 s). |
 | `WEBHOOK_URL` | Optional webhook URL for new-filing notifications as this can be a slack or teams webhook URL(default is None). |
+
+## How It Works
+
+1. GETs each company's CIK number from SEC ticker via the SEC company tickers endpoint.
+2. create a ticker map from the optained ticker list.
+2. GET request to the EDGAR submissions API to find the most recent 10-K filing based on the mapping.
+3. Downloads the filing HTML from the SEC Archives.
+4. Renders the HTML to PDF using Playwright.
+5. Records the accession number in a manifest to avoid duplication and stores the HTML as well.
+6. Set a scheduler to run it everyday.
+7. Set up a notifier for letting the teams know when ever there is a new filling.
+
+Output PDFs are saved to the `sec_10k_pdfs/` directory.
 
 ## SEC API References
 
