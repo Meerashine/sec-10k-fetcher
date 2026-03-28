@@ -19,8 +19,8 @@ companies and converts them to PDF.
 
 ### Mindmap
 
-> ![Design Mindmap](assets/mindmap.png)
-> [View the design mindmap on Figma](https://www.figma.com/file/YOUR_FILE_ID)
+> ![Design Mindmap](assets/Quartr_Solution_Design.png)
+> [View the design mindmap on Figma](https://www.figma.com/board/0Vr7GPBXFs2gTlZZIlWQkw/Quartr_Solution_Design?node-id=21-3132&t=hEatoDgM1JnYYkYe-0)
 
 Quartr makes financial data accessible. The 10-K is the most comprehensive public
 disclosure a company produces such as revenue breakdowns, risk factors..etc. This
