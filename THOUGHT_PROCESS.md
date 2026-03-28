@@ -1,6 +1,6 @@
 # Thought Process & Design Decisions
 
-# TIME SPENT(for entire thought process and reaching the solution): 1.5 hrs
+# TIME SPENT: 1.5 hrs
 
 ## 1. Understanding the Problem
 
@@ -42,11 +42,11 @@ Before writing any code, I worked through **why** a company like Quartr needs th
 - Also more overhead to non-technical people.
 - For this assignment scope: webhook notification to teams when a new filing is created.
 
-## Usecase Definition:
+## 3. Usecase Definition:
 
 Create a reliable, Scalable pipeline to convert the 10-k fillings for different companies to PDF format and make it available to other teams for usage for summerisation, earning calls and stock reports.
 
-## 3. Architecture Decisions
+## 4. Architecture Decisions
 
 | Decision | Reasoning |
 |---|---|
@@ -64,7 +64,7 @@ Create a reliable, Scalable pipeline to convert the 10-k fillings for different 
 | **Webhook notifier** | Fires a WEBHOOK when a new filing is fetched; teams gets notified |
 | **Daily scheduler** | Lightweight `schedule` library. Runs the pipeline once per day. Manifest ensures no duplicate work. For now this is the simplest solution we can keep. |
 
-## 4. Simplification Choices
+## 5. Simplification Choices
 
 Throughout the process I actively simplified:
 
@@ -74,7 +74,7 @@ Throughout the process I actively simplified:
 - Removed HTML file saving and used them as temp files as PDF was the deliverable
 - Seperated the Configs from the pipeline.py to make it reliable.
 
-## 5. What I'd Do Next (Beyond 4 Hours)
+## 6. What I'd Do Next (Beyond 4 Hours)
 
 - **Tests** — unit tests for the client (mock SEC responses), integration test for the full pipeline.
 - **Scheduler** - The entire scheduler can be part of the pipeline or the deployment.
@@ -87,6 +87,6 @@ Throughout the process I actively simplified:
 - **Section Summary** — Can non-technical teams to understand what changed in the files.
 
 
-## 6. AI Tool Usage
+## 7. AI Tool Usage
 
-The AI was used as a collaborative tool — I drove the design decisions, questioned assumptions, and iteratively simplified the implementation. Used AI for coding help.
+The AI was used as a collaborative tool. I drove the design decisions, questioned assumptions, and iteratively simplified the implementation. Used AI for coding help.

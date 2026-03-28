@@ -115,7 +115,7 @@ See [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md) for the detailed solution design.
 
 See the design discussion below for how this fits into a production data platform.
 
-### Production Architecture (Beyond This Script)
+## Production Architecture (Beyond This Script)
 
 | Layer | What | Why |
 |---|---|---|
