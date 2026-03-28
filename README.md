@@ -12,9 +12,10 @@ companies and converts them to PDF.
 | [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md) | 1.5 |
 | Coding and debugging | 2.5 |
 
-## Why This Exists 
+## Approach
 
-**Detailed Solution design on [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md)**
+> **Start here → [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md)**
+> Covers: problem understanding, SEC API research, architecture decisions, simplification trade-offs, and what I'd build next.
 
 Quartr makes financial data accessible. The 10-K is the most comprehensive public
 disclosure a company produces such as revenue breakdowns, risk factors..etc. This
@@ -54,8 +55,8 @@ sec_fetcher/
 
 ```bash
 # Create and activate a virtual environment
-python3 -m venv quatr
-source quatr/bin/activate
+python3 -m venv quartr
+source quartr/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -104,7 +105,6 @@ Output PDFs are saved to the `sec_10k_pdfs/` directory.
 
 - Company tickers: https://www.sec.gov/files/company_tickers.json
 - Submissions: https://data.sec.gov/submissions/CIK{cik}.json
-- EDGAR full-text search: https://efts.sec.gov/LATEST/search-index?q=...
 - How to use SEC API: https://blog.greenflux.us/so-you-want-to-integrate-with-the-sec-api/
 - Info on 10k fillings : https://www.dfinsolutions.com/knowledge-hub/thought-leadership/knowledge-resources/what-10-k-filing
 
@@ -115,12 +115,24 @@ See [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md) for the detailed solution design.
 
 See the design discussion below for how this fits into a production data platform.
 
+### Output
+
+**First run — fetches all 6 filings:**
+![First run output](assets/first_run.png)
+
+
+**Second run — manifest skips all 6 (deduplication):**
+![Pipeline output with manifest deduplication](assets/outcome_with_skipping.png)
+
 ## Production Architecture (Beyond This Script)
 
 | Layer | What | Why |
 |---|---|---|
 | **Scheduled ingestion** | Daily cron polling SEC | Companies file on unpredictable dates across a ~5-month window in a FY |
-| **Object storage** | S3 with `filings/{cik}/{accession}/` | Durable, versioned, cheap |
+| **Object storage** | S3 storage  | Durable, versioned, cheap ( if we need to store 10yrs of data)|
 | **Metadata DB** | Postgres table of filing metadata | Queryable catalog |
-| **REST API** | `GET /filings?ticker=AAPL&form=10-K` | Downstream teams consume filings without touching storage |
-| **Event bus** | `filing.ingested` events | NLP pipelines and alerts react in real time |
+| **REST API** | `GET /filings?ticker=AAPL&form=10-K` ( example)| Downstream teams consume filings without touching storage |
+| **Event bus** | `filing.ingested`,`filing.missed`, `filing.ammended` events ( example) | NLP pipelines and alerts react in real time |
+| **Data lineage** | The manifest can be used to figure out when the data was fetched with the accension numbers and figure out data lineage |
+| **Observability** | Observability beyond just logs add Grafana or Prometheous for advanced observability and metrics storage. |
+

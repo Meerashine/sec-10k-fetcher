@@ -1,0 +1,12 @@
+# Virtual environment
+quartr/
+
+# Python
+__pycache__/
+*.pyc
+
+# Output (generated files)
+# sec_10k_pdfs/
+
+# macOS
+.DS_Store

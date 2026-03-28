@@ -1,6 +1,6 @@
 # Thought Process & Design Decisions
 
-# TIME SPENT: 1.5 hrs
+# TIME SPENT: 2 hrs
 
 ## 1. Understanding the Problem
 
@@ -23,6 +23,14 @@ Before writing any code, I worked through **why** a company like Quartr needs th
 - Amended filings can appear at any time of the year which creates uncertainity.
 - **Implication:** this is a live, accumulating dataset — not a one-time download and needs monitoring.
 
+### Does Accessing SEC data requires auth or token?
+- SEC does not require an API key but has a no more than 10 requests per second from a single source IP
+- **Implication:** this can be handled with a 1 sec delay between requests.
+
+### Initial access showed blocker page and the PDF downlaoded showed blockers?
+- This happens if rate limits are exceeded or User-Agent is missing.
+- **Implication:** code needs to detect this and raise error.
+
 ### Why poll daily if filings are annual?
 - Companies don't all file on the same day they can vary over a FY or over last few months of a FY not calender year.
 - There's no specific date or data telling you when a specific company will file.
@@ -35,12 +43,18 @@ Before writing any code, I worked through **why** a company like Quartr needs th
 
 ### SEC has data in HTML format and we need to convert to PDF. but do we need to keep HTML format?
 - Storage is cheap but the question is do we need to keep the HTML format as well. As HTML can be more machine readable it could be helpfull as well for ML/NLP as it can be eaily parsable and cheaper to process.
+- Also SEC data is structural data embedded in HTML; which means its not only visual but machine readble; may be in future we dont need NLP to parse it; so HTML can be a future resoucre.
 - **Decision:** keep what you fetch, index by accession number so nothing gets overwritten.
 
 ### How to deliver to other teams?
 - A folder of PDFs is not ideal. The production version should expose data through an **API** and optionally an **event bus**.
 - Also more overhead to non-technical people.
 - For this assignment scope: webhook notification to teams when a new filing is created.
+
+### What can affect the data quality
+- The first and formost is the blocker message showcase while accessing HTML.
+- Some files can have encoding or embedding issues( didnt face it but need to be prepared)
+- For this assignment scope: We need to by pass even if one company fails.
 
 ## 3. Usecase Definition:
 
@@ -79,12 +93,15 @@ Throughout the process I actively simplified:
 - **Tests** — unit tests for the client (mock SEC responses), integration test for the full pipeline.
 - **Scheduler** - The entire scheduler can be part of the pipeline or the deployment.
 - **Notifier** - setup a teams or slack URL for teams to be notified.
-- **Docker** — containerise for consistent deployment.
+- **Docker** — containerise for consistent deployment for cloud based deployment.
 - **CI/CD** - set up the CI/CD and deployment scripts for seamless deployments.
 - **Manifest** — This approach might not be right as it can create a longer manifest in the longer run and if overriding chances at the time of amendments. Might need a proper version controlling.
 - **Database** — replace JSON manifest with Postgres for queryable filing metadata or vector DB as well like opensource options Qdrant.This can help with non-technical teams as well
 - **REST API** — `GET /filings?ticker=AAPL&form=10-K&latest=true` so other teams consume data without looking into storage and also helps with extraction.
 - **Section Summary** — Can non-technical teams to understand what changed in the files.
+- **Data lineage** - The manifest can be used to figure out when the data was fetched with the accension numbers and figure out data lineage.
+- **Schema Evalution** - What if SEC Changes the schema or data format for fetching the files ( API response and path chnages); this needs to be proporly tracked and notified to avoid breakages in code runs.
+- **Data History** - Historical data is always valuable form a ML or DE perspective; what if we need to store 10 yrs of data for evaluation we might need advanced stoarge options which are low cost as well.
 
 
 ## 7. AI Tool Usage

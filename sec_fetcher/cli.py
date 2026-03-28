@@ -18,18 +18,14 @@ from sec_fetcher.config import (
     DEFAULT_OUTPUT_DIR,
     MANIFEST_FILENAME,
     USER_AGENT,
+    WEBHOOK_URL,
 )
 from sec_fetcher.manifest import Manifest
 from sec_fetcher.models import FilingResult
+from sec_fetcher.notifier import notify_missing_filings
 from sec_fetcher.pipeline import process_company
 
 log = logging.getLogger(__name__)
-
-logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s  %(levelname)-7s  %(message)s",
-        datefmt="%H:%M:%S",
-    )
 
 
 def main() -> None:
@@ -102,27 +98,7 @@ def _print_summary(results: List[FilingResult]) -> None:
 
     if missing:
         log.error("Missing filings for: %s", ", ".join(missing))
-
-    # summary = [
-    #     {
-    #         "company": r.company,
-    #         "ticker": r.ticker,
-    #         "status": r.status,
-    #         **(
-    #             {
-    #                 "filing_date": r.filing.filing_date,
-    #                 "accession_number": r.filing.accession_number,
-    #                 "filing_url": r.filing.filing_url,
-    #                 "pdf_path": r.pdf_path,
-    #             }
-    #             if r.filing
-    #             else {}
-    #         ),
-    #         **({"error": r.error} if r.error else {}),
-    #     }
-    #     for r in results
-    # ]
-    # print(json.dumps(summary, indent=2))
+        notify_missing_filings(WEBHOOK_URL, missing)
 
     if failed:
         sys.exit(1)

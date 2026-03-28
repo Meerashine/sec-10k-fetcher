@@ -57,3 +57,9 @@ def render_pdf(
     finally:
         page.close()
         tmp_path.unlink(missing_ok=True)
+
+    # Validate the output — catch corrupt or empty renders early.
+    size = pdf_path.stat().st_size
+    if size == 0:
+        pdf_path.unlink(missing_ok=True)
+        raise RuntimeError(f"Rendered PDF is empty: {pdf_path.name}")
