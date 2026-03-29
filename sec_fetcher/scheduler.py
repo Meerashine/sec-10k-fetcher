@@ -32,7 +32,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def sccheduler() -> None:
+def scheduler() -> None:
     log.info("Starting scheduled SEC 10-K fetch")
     try:
         run_pipeline()
@@ -48,7 +48,7 @@ def main() -> None:
 
     args = parse_args()
 
-    schedule.every().day.at(args.time).do(sccheduler)
+    schedule.every().day.at(args.time).do(scheduler)
     log.info("Scheduled to run daily at %s", args.time)
 
     while True:
