@@ -41,6 +41,8 @@ sec_fetcher/
 ├── pipeline.py       # fetch(EXTRACT) → transform → record(LOAD)
 ├── renderer.py       # HTML to PDF with Playwright
 └── scheduler.py      # Daily scheduling with the scheduler lib.
+tests/
+└── test_manifest.py  # tests file for deduplications(sample)
 ```
 
 ### Reliability & Scalability
