@@ -1,4 +1,4 @@
-"""Lightweight JSON manifest for filing deduplication."""
+"""JSON manifest for filing deduplication."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from sec_fetcher.models import Filing
 
 
 class Manifest:
-    """Tracks fetched accession numbers so re-runs skip duplicates."""
+    # This class tracks fetched accession numbers so re-runs skip duplicates.
 
     def __init__(self, seen: Set[str] | None = None) -> None:
         self._seen: Set[str] = seen or set()

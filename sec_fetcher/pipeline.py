@@ -1,3 +1,4 @@
+"""Core pipeline logic for fetching and processing SEC filings."""
 from __future__ import annotations
 
 import logging
@@ -24,10 +25,11 @@ def process_company(
     output_dir: Path,
     manifest: Manifest,
 ) -> FilingResult:
+
     """Fetch and convert one company's 10-K.
 
-    made it like alsways returns ``FilingResult``.so other
-    comanies can be processed even if one fails.
+    Always returns a ``FilingResult`` so other
+    companies can be processed even if one fails.
     """
     try:
         filing = client.get_latest_10k(

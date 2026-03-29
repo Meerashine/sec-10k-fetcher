@@ -1,4 +1,4 @@
-"""Domain models for SEC filings."""
+"""Models used for SEC filings."""
 
 from __future__ import annotations
 

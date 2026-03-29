@@ -1,7 +1,7 @@
 """Daily scheduler — runs the SEC fetcher once per day.
 
 Usage:
-    python -m sec_fetcher.scheduler              # runs daily at 08:00
+    python -m sec_fetcher.scheduler          # runs daily at 08:00 by default
     python -m sec_fetcher.scheduler --time 14:30  # runs daily at 14:30
 """
 

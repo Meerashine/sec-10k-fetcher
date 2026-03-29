@@ -1,3 +1,6 @@
+"""Notifier module for sending updates about SEC filing processing to other
+    teams or systems via webhooks."""
+
 from __future__ import annotations
 
 import logging

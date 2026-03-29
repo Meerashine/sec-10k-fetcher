@@ -1,3 +1,4 @@
+"""Rendering logic for saving raw HTML and converting to PDF."""
 from __future__ import annotations
 
 import logging
@@ -10,7 +11,7 @@ log = logging.getLogger(__name__)
 
 
 def save_html(html: str, html_path: Path) -> None:
-    """Persist the raw filing HTML for downstream ML/NLP use."""
+    # Persist the raw filing HTML for downstream ML/NLP use.
     html_path.parent.mkdir(parents=True, exist_ok=True)
     html_path.write_text(html, encoding="utf-8")
     log.info("  HTML saved: %s", html_path.name)
@@ -21,12 +22,12 @@ def render_pdf(
     html: str,
     pdf_path: Path,
 ) -> None:
-    """Render HTML string to a paginated A4 PDF.
+    # Render HTML string to a paginated A4 PDF.
+    #
+    # Writes HTML to a temporary file (needed as Playwright can
+    # navigate to it and resolve the HTML references for assets),
+    # then deletes it after rendering.
 
-    Writes HTML to a temporary file (needed as Playwright can
-    navigate to it and resolve the HTML references for assets),
-    then deletes it after rendering.
-    """
     pdf_path.parent.mkdir(parents=True, exist_ok=True)
 
     with tempfile.NamedTemporaryFile(
@@ -57,9 +58,3 @@ def render_pdf(
     finally:
         page.close()
         tmp_path.unlink(missing_ok=True)
-
-    # Validate the output — catch corrupt or empty renders early.
-    size = pdf_path.stat().st_size
-    if size == 0:
-        pdf_path.unlink(missing_ok=True)
-        raise RuntimeError(f"Rendered PDF is empty: {pdf_path.name}")

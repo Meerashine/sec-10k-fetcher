@@ -1,7 +1,4 @@
-"""CLI entry point for the SEC 10-K fetcher.
-
-Usage:
-    python -m sec_fetcher
+"""Entry point for the SEC 10-K fetcher.
 """
 
 from __future__ import annotations
@@ -91,7 +88,7 @@ def _print_summary(results: List[FilingResult]) -> None:
     for r in failed:
         log.error("  FAILED  %s: %s", r.company, r.error)
 
-    # Check: every company in config should have a result that isn't "error".
+    # Every company in config should have a result that isn't "error".
     expected = set(COMPANIES.keys())
     succeeded = {r.company for r in results if r.status in ("ok", "skipped")}
     missing = sorted(expected - succeeded)
