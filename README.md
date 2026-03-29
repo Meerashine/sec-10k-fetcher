@@ -123,7 +123,7 @@ See the design discussion below for how this fits into a production data platfor
 ### Output
 
 **First run — fetches all 6 filings:**
-![First run output](assets/first_run.png)
+![First run output](assets/outcome_first_run.png)
 
 
 **Second run — manifest skips all 6 (deduplication):**
