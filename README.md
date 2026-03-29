@@ -149,24 +149,30 @@ See [THOUGHT_PROCESS.md](THOUGHT_PROCESS.md) for the detailed solution design.
 
 See the design discussion below for how this fits into a production data platform.
 
-### Output
+## Output
 
 **First run — fetches all 6 filings:**
+
 ![First run output](assets/outcome_first_run.png)
 
 
 **Second run — manifest skips all 6 (deduplication):**
+
 ![Pipeline output with manifest deduplication](assets/outcome_with_skipping.png)
 
 ## Production Architecture (Beyond This Script)
 
 | Layer | What | Why |
 |---|---|---|
-| **Scheduled ingestion** | Daily cron polling SEC | Companies file on unpredictable dates across a ~5-month window in a FY |
-| **Object storage** | S3 storage  | Durable, versioned, cheap ( if we need to store 10yrs of data)|
+| **Scheduled ingestion** | Daily scheduler polling SEC | Companies file on unpredictable dates across a ~5-month window in a FY and can be advanced by part of a pipeline or cloud|
+| **Tests** | unit tests for the client (mock SEC responses), integration test for the full pipeline.(just created a sample now) | |
+| **Object storage/DB** | S3 storage  | Durable, versioned, cheap ( if we need to store 10yrs of data)|
 | **Metadata DB** | Postgres table of filing metadata | Queryable catalog |
 | **REST API** | `GET /filings?ticker=AAPL&form=10-K` ( example)| Downstream teams consume filings without touching storage |
 | **Event bus** | `filing.ingested`,`filing.missed`, `filing.amended` events ( example) | NLP pipelines and alerts react in real time |
-| **Data lineage** | The manifest can be used to figure out when the data was fetched with the accession numbers and figure out data lineage |
-| **Observability** | Observability beyond just logs add Grafana or Prometheus for advanced observability and metrics storage. |
-
+| **CI/CD** | set up the CI/CD and deployment scripts |seamless deployments. |
+| **Data lineage** | The manifest can be used to figure out when the data was fetched with the accession numbers and figure out data lineage | Creates traces on company's valuation|
+| **Observability** | Observability beyond just logs add Grafana or Prometheus for advanced observability and metrics storage. |Make our system more reliable|
+| **REST API** | `GET /filings?ticker=AAPL&form=10-K&latest=true` so other teams consume data without looking into storage and also helps with extraction. |More convenient for other systmes to use. |
+| **Schema Evolution** | What if SEC changes the schema or data format for fetching the files (API response and path changes); this needs to be properly tracked and notified to avoid breakages in code runs. |
+| **Data History** | Historical data is always valuable from a ML or DE perspective; what if we need to store 10 yrs of data for evaluation we might need advanced storage options which are low cost as well. | This is the core for pattern identification |
